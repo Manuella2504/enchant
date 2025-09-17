@@ -11,7 +11,7 @@ box-sizing: border-box;
 
 .titulo1 {
 text-align: center;
-color: #8B4513;
+
 margin: 20px 0;
 font-family: "Passion One", sans-serif;
 font-size: 32px;
@@ -28,7 +28,7 @@ pointer-events: none;
 
 .toast1 {
 background: white;
-color: #374151;
+color:#291705ff;
 padding: 1rem;
 border-radius: 0.5rem;
 box-shadow: 0 10px 25px rgba(0,0,0,0.15);
@@ -372,9 +372,9 @@ color: white;
 .type-badge1.mensal1 { background: #daa77d; }
 .type-badge1.semanal1 { background: #965c36e7; }
 .type-badge1.relatorio1 { 
-background: #f59e0b; 
-color: #78350f;
-border: 1px solid #d97706;
+background: #a77b30; 
+color: #fcfcfc;
+border: 1px solid #a77b30;
 }
 
 .origin-badge1 {

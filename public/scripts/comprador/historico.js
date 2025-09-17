@@ -674,7 +674,7 @@ function generatePDF(donationId = null) {
             console.error('Erro ao gerar PDF:', error);
             notification.show(`Erro ao gerar PDF: ${error.message}`, 'error');
         } finally {
-            pdfLoading.classList.remove('show');
+            pdfLoading.classList.remove('show1');
         }
     }, 800);
 }
