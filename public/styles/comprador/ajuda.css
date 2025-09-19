@@ -34,7 +34,8 @@ body {
   }
   
   .accordion-section {
-    background: linear-gradient(to left, #f3e4d7 0%, #ffffff 100%);
+    background: white;
+    border: 1px solid #000000;
     border-radius: 12px;
     box-shadow: 0 0 5px rgba(92, 59, 30, 0.1);
     margin-bottom: 40px;
