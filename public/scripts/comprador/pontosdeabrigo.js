@@ -38,6 +38,24 @@ document.addEventListener("DOMContentLoaded", function () {
     // NOVO CÓDIGO PARA PONTOS DE ABRIGO
     // Inicializar componentes para pontos de abrigo
     setupPontosAbrigoFunctionality();
+
+    // Adicionar listener para o botão de busca para evitar reload e melhorar responsividade
+    const searchButton = document.querySelector('.s-button');
+    if (searchButton) {
+        searchButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const searchInput = document.getElementById('searchabrigo');
+            if (searchInput) {
+                const query = searchInput.value.trim();
+                if (query.length === 0) {
+                    alert('Por favor, insira um termo para pesquisa.');
+                    return;
+                }
+                // Aqui você pode adicionar a lógica para realizar a busca, por exemplo, filtrar os abrigos exibidos
+                alert('Pesquisa realizada para: ' + query);
+            }
+        });
+    }
 });
 
 // Inicialização dos componentes para pontos de abrigo
