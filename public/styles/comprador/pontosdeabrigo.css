@@ -112,17 +112,23 @@ body {
 
 .input, .textarea {
     width: 100%;
-    padding: 6px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-family: 'Lexend Deca', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input::placeholder, .textarea::placeholder {
     font-size: 12px;
+    color: #999;
 }
 
 .input:focus, .textarea:focus {
     outline: none;
+    border-color: #70451d;
+    box-shadow: 0 0 0 2px rgba(112, 69, 29, 0.2);
 }
 
 .textarea {
@@ -139,30 +145,55 @@ body {
     border-radius: 10px;
     margin-left: 0.5rem;
     color: #050505;
-    padding: 8px 15px;
+    padding: 10px 16px;
     font-size: 14px;
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    min-width: 80px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.s-button:hover {
+    background-color: #caae8d;
+    color: #3d2106;
+    transform: translateY(-1px);
+}
+
+.s-button:active {
+    transform: translateY(0);
 }
 
 .searchinho {
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    align-items: stretch;
+    margin: 20px auto;
+    max-width: 500px;
+    width: 100%;
+    gap: 8px;
 }
 
 .search-inputinho {
-    width: 100%;
-    max-width: 400px;
-    align-self: center;
-    padding: 0.55rem 1rem;
+    flex: 1;
+    min-width: 200px;
+    padding: 10px 16px;
     border: 1px solid #ccc;
     border-radius: 12px;
     font-family: 'Lexend Deca', sans-serif;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    height: 40px;
+}
+
+.search-inputinho:focus {
+    border-color: #70451d;
+    box-shadow: 0 0 0 2px rgba(112, 69, 29, 0.2);
 }
 
 .button {
@@ -171,29 +202,35 @@ body {
     outline: none;
     border-radius: 10px;
     color: #4e3629;
-    padding: 8px 15px;
-    font-weight: 400;
+    padding: 10px 20px;
+    font-weight: 500;
     font-size: 14px;
     margin-top: 1rem;
     cursor: pointer;
     width: 150px;
     height: 45px;
+    transition: all 0.3s ease;
 }
 
 .button:hover {
     background-color: #caae8d;
     color: #3d2106;
-    transition: transform 0.2s ease;
+    transform: translateY(-1px);
+}
+
+.button:active {
+    transform: translateY(0);
 }
 
 .button:focus {
     outline: none;
+    box-shadow: 0 0 0 2px rgba(112, 69, 29, 0.3);
 }
 
 /* GALERIA - LAYOUT RESPONSIVO PRINCIPAL */
 .gallery {
     margin: 50px auto;
-    max-width: 1650px;
+    max-width: 1400px;
     width: 95%;
     padding: 0 10px;
 }
@@ -213,15 +250,16 @@ body {
         min-height: 220px;
         padding: 15px;
         margin-bottom: 0;
-        border-radius: 20px;
+        border-radius: 15px;
         border: 1px solid #ddd;
         display: flex;
         width: 100%;
         align-items: flex-start;
         position: relative;
         flex-wrap: nowrap;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        max-width: 1210px;
+        margin-left: 90px;
     }
     
     .gallery-item:hover {
@@ -230,32 +268,33 @@ body {
     }
     
     .gallery-item img {
-        width: 200px;
-        height: 180px;
-        border-radius: 4px;
+        width: 150px;
+        height: 150px;
+        border-radius: 8px;
         margin-top: 10px;
-        margin-right: 20px;
+        margin-right: 15px;
         object-fit: cover;
         flex-shrink: 0;
     }
     
     .gallery-info {
         flex: 1;
-        background-color: #DAB68B;
+        background-color: #fff6f1; 
+        box-shadow: #666 0 0 2px 0px;  
         border-radius: 8px;
         height: auto;
-        min-height: 200px;
-        padding: 7px;
-        max-width: calc(100% - 220px);
+        min-height: 150px;
+        padding: 12px;
+        max-width: calc(100% - 165px);
         min-width: 200px;
     }
     
     .action-buttons {
         position: absolute;
-        top: -3.2rem;
+        top: -2.5rem;
         right: 15px;
         display: flex;
-        gap: 10px;
+        gap: 8px;
     }
 }
 
@@ -508,68 +547,166 @@ body {
 @media (max-width: 818px) {
     .input-container {
         flex-direction: column;
-        width: 90%;
-        max-width: 500px;
+        width: 95%;
+        max-width: 600px;
+        padding: 16px;
     }
     
-    .s-button {
-        font-size: 10px;
-        width: 4rem;
+    .searchinho {
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        margin: 20px auto;
+        max-width: 400px;
     }
     
     .search-inputinho {
         width: 100%;
-        max-width: 320px;
+        min-width: auto;
+        max-width: none;
+        margin: 0;
+    }
+    
+    .s-button {
+        margin: 0;
+        width: 100%;
+        max-width: 200px;
+        padding: 12px 20px;
+        font-size: 14px;
+        font-weight: 600;
     }
     
     .input-image-container {
-        width: 260px;
-        margin-top: 22px;
+        width: 100%;
+        max-width: 300px;
+        margin: 20px auto;
         height: 200px;
         margin-right: 0;
-        margin-bottom: 20px;
-        align-self: center;
+    }
+    
+    .input-fields-container {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
     }
     
     .input, .textarea {
         width: 100%;
-        max-width: 20rem;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+    
+    .label {
+        font-size: 15px;
+        margin-bottom: 6px;
     }
     
     .button {
-        margin-left: 0;
-        padding: 8px 25px;
-        width: auto;
+        width: 100%;
+        max-width: 200px;
+        margin: 1rem auto 0;
+        padding: 12px 20px;
+        font-size: 14px;
     }
     
     .button-group {
         justify-content: center;
         margin-right: 0;
         width: 100%;
+        padding: 0 16px;
     }
 }
 
-/* Media queries para dispositivos muito pequenos */
-@media (max-width: 576px) {
+/* Media queries para tablets pequenos */
+@media (max-width: 640px) {
     .gg1 {
         font-size: 28px;
+        margin-top: 2rem;
+    }
+    
+    .searchinho {
+        max-width: 350px;
+        padding: 0 16px;
+    }
+    
+    .search-inputinho {
+        padding: 12px 16px;
+        font-size: 14px;
+        border-radius: 10px;
+    }
+    
+    .s-button {
+        max-width: 150px;
+        padding: 12px 16px;
+        font-size: 13px;
+        border-radius: 8px;
     }
     
     .input-container {
-        padding: 10px;
-        margin: 20px auto;
         width: 95%;
+        padding: 14px;
     }
     
     .input-image-container {
-        width: 90%;
-        max-width: 200px;
-        height: 150px;
+        max-width: 280px;
+        height: 180px;
+    }
+}
+
+/* Media queries para dispositivos pequenos */
+@media (max-width: 576px) {
+    .gg1 {
+        font-size: 26px;
+        margin-top: 1.5rem;
+    }
+    
+    .input-container {
+        padding: 12px;
+        margin: 16px auto;
+        width: 95%;
+    }
+    
+    .searchinho {
+        margin: 16px auto;
+        padding: 0 12px;
+        max-width: 300px;
+    }
+    
+    .search-inputinho {
+        padding: 10px 14px;
+        font-size: 13px;
+        min-height: 44px;
+    }
+    
+    .s-button {
+        padding: 10px 14px;
+        font-size: 12px;
+        min-height: 44px;
+        max-width: 120px;
+    }
+    
+    .input-image-container {
+        width: 100%;
+        max-width: 250px;
+        height: 160px;
+        margin: 16px auto;
+    }
+    
+    .input, .textarea {
+        padding: 10px 14px;
+        font-size: 13px;
+        border-radius: 8px;
+    }
+    
+    .label {
+        font-size: 14px;
     }
     
     .button {
-      padding: 8px 16px;
-        font-size: 14px;
+        padding: 10px 16px;
+        font-size: 13px;
+        height: 44px;
+        max-width: 160px;
     }
     
     .gallery {
@@ -620,14 +757,15 @@ body {
         width: 100%;
         max-width: 200px;
         text-align: center;
-        padding: 6px 10px;
+        padding: 8px 12px;
         font-size: 12px;
+        min-height: 40px;
     }
     
     .cancel-btn {
         width: 100%;
         max-width: 200px;
-        height: 2.5rem;
+        height: 44px;
         margin-right: 0;
         font-size: 12px;
     }
@@ -641,12 +779,49 @@ body {
     }
     
     .gg1 {
-        font-size: 28px;
+        font-size: 24px;
+        margin-top: 1rem;
+    }
+    
+    .searchinho {
+        max-width: 280px;
+        padding: 0 8px;
+        gap: 10px;
+    }
+    
+    .search-inputinho {
+        padding: 8px 12px;
+        font-size: 12px;
+        min-height: 40px;
+    }
+    
+    .s-button {
+        padding: 8px 12px;
+        font-size: 11px;
+        min-height: 40px;
+        max-width: 100px;
     }
     
     .input-image-container {
         width: 90%;
-        height: 130px;
+        height: 140px;
+        max-width: 220px;
+    }
+    
+    .input, .textarea {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    
+    .label {
+        font-size: 13px;
+    }
+    
+    .button {
+        max-width: 140px;
+        font-size: 12px;
+        height: 40px;
+        padding: 8px 12px;
     }
     
     .gallery-item img {
@@ -662,8 +837,10 @@ body {
         font-size: 10px;
     }
     
-    .edit-btn, .delete-btn, .cancel-btn, .button {
+    .edit-btn, .delete-btn, .cancel-btn {
         max-width: 90%;
         font-size: 11px;
+        min-height: 36px;
+        padding: 6px 10px;
     }
 }
