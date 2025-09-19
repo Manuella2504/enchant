@@ -60,10 +60,11 @@ body {
   }
   
   .form-container {
-    background: linear-gradient(to left, #f3e4d7 0%, #ffffff 100%); /* Adicionado gradiente */
+    background:white; 
     border: none;
     border-radius: 20px;
     box-shadow: 0 0 5px rgba(92, 59, 30, 0.1);
+    border: 1px solid #000000 ;
     padding: 40px;
     width: 100%;
     box-sizing: border-box;
