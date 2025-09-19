@@ -500,32 +500,77 @@ i {
 @media (max-width: 1024px) {
 }
 
-/* Layout para Celulares (1 coluna) */
 @media (max-width: 768px) {
-    main {
-        padding: 15px;
+    .map-container {
+        flex-direction: column; 
+        height: auto; 
+        padding: 10px;
+        border: none; 
     }
-    .grafico{
-        width: 90%;
+
+    .info { 
+        padding: 5px 8px; 
+        font: 12px/16px Arial, Helvetica, sans-serif;
+        background: white; 
+        background: rgba(255,255,255,0.8); 
+        box-shadow: 0 0 15px rgba(0,0,0,0.2); 
+        border-radius: 5px; 
     }
-    .dashboard-container{
-        flex-wrap: wrap;
-        justify-items: center;
+
+    .info h4 { 
+        margin: 0 0 5px; 
+        color: #777; 
+        font-size: 14px;
+    }
+
+    .legend { 
+        text-align: left; 
+        line-height: 16px; 
+        color: #555; 
+        font-size: 12px; 
+        background-color: rgba(255,255,255,0.8); 
+        padding: 8px;     
+        border-radius: 5px;
+    }
+
+    /* Os quadradinhos de cor na legenda */
+    .legend i { 
+        width: 14px;       /* Quadrados de cor menores */
+        height: 14px;      /* Quadrados de cor menores */
+        float: left; 
+        margin-right: 6px; /* Menos espaço entre o quadrado e o texto */
+        opacity: 0.9; 
+    }
+    
+    .filter-panel {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 40px;
         align-items: center;
     }
 
-    .map-container {
-        flex-wrap: wrap;
-        justify-items: center;
+    #mapa {
+        width: 190vh;
+        height: 300vh; 
+    }
+
+    .dashboard-container {
+        display: flex;
         align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .grafico {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        width: 90%; 
+        height: auto;
+        flex-basis: 100%; /* Garante que ele ocupe a linha inteira */
     }
 
     .filter-panel{
         margin: 0;
-    }
-
-    #mapa { 
-        width: 50%;
     }
 
     .card h3 {

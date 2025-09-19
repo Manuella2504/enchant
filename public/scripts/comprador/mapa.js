@@ -338,7 +338,7 @@ function configurarBusca(geojson) {
             feature.properties.name.split('/')[0].trim().toLowerCase() === nomeCidade
         );
         if (municipiosEncontrados.length === 0) {
-            alert('Município não encontrado.');
+            resultadoConsulta.innerHTML = `<div class="card-resultado"><p>Município não encontrado.</p></div>`;
         } else if (municipiosEncontrados.length === 1) {
             zoomParaMunicipio(municipiosEncontrados[0]);
         } else {
