@@ -26,11 +26,11 @@ class HeaderComponent {
                 <a id="suporte-header" class="nav-link" href="../../../../src/views/enchant/ajuda.html" title="Suporte">Suporte</a>
               </li>
               <li class="nav-item">
-                <a id="entrar" class="nav-link" href="../../../../src/views/enchant/entrar.html" title="Entrar">Entrar</a>
+                <a id="entrar" class="nav-link" href="../../../../src/views/enchant/entrar1.html" title="Entrar">Entrar</a>
               </li>
             </ul>
             <!-- O botão permanece inalterado -->
-              <a href="#plans">
+              <a href="../../../../src/views/index.html#plans">
               <button class="btn btn-brown" type="button" id="doeagora">
                 Junte-se a nós
               </button>
@@ -103,7 +103,7 @@ class HeaderComponent {
         border: none;
         outline: none;
         position: relative;
-        transition: all 0.3s ease;
+        text-decoratin:none;
       }
 
       #icone:focus {
@@ -179,13 +179,12 @@ class HeaderComponent {
         font-size: 16px;
         width: 9rem;
         margin-right: 2rem;
+        border: none;
       }
 
       #doeagora:hover {
         background-color: #caae8d;
         color: #3d2106;
-        text-decoration: none;
-        border: 1px solid #d8b48bce;
       }
 
       #doeagora:focus {
