@@ -487,3 +487,20 @@
         font-size: 14px;
     }
 }
+
+/* Adjust padding for sidebar layout */
+section, header {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    border-left: none !important; /* Remove white vertical line */
+}
+
+.sidebar {
+    border-radius: 0 !important; /* Remove rounded corner causing white stripe */
+    box-shadow: none !important; /* Remove shadow that might appear as a line */
+}
+
+.main-content {
+    border-left: none !important; /* Ensure no left border on main content */
+    padding: 0 !important; /* Remove padding to eliminate any white space */
+}
