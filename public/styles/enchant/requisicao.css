@@ -210,6 +210,10 @@ margin: 0;
 cursor: pointer;
 }
 
+input::placeholder{
+    font-size: 14px;
+}
+
 /* ========== UPLOAD DE ARQUIVOS ========== */
 .upload-area {
 border: 2px dashed var(--cor-borda);

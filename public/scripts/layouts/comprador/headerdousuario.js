@@ -17,7 +17,7 @@
                 const css = `
                     :root {
                         --primary-color: #693B11;
-                        --accent-color: #EC9E07;
+                        --accent-color: #5c3e03ff;
                         --text-color: #333;
                         --light-bg: #ECECEC;
                         --white: #FFFFFF;
@@ -223,70 +223,6 @@
                         font-size: 16px;
                     }
 
-                    .cadastro-section {
-                        position: relative;
-                    }
-
-                    .cadastro-button {
-                        background: none;
-                        border: none;
-                        color: var(--text-color);
-                        text-decoration: none;
-                        font-size: 14px;
-                        font-weight: 400;
-                        cursor: pointer;
-                        transition: color 0.2s;
-                        padding: 0;
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                    }
-
-                    .cadastro-button:hover {
-                        color: var(--accent-color);
-                    }
-
-                    .cadastro-button i {
-                        transition: transform 0.3s ease;
-                    }
-
-                    .cadastro-button.open i {
-                        transform: rotate(180deg);
-                    }
-
-                    .cadastro-dropdown {
-                        position: absolute;
-                        top: 120%;
-                        left: 0;
-                        background: var(--light-bg);
-                        border-radius: 8px;
-                        padding: 10px;
-                        min-width: 150px;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                        display: none;
-                        z-index: 1001;
-                    }
-
-                    .cadastro-dropdown.show {
-                        display: block;
-                    }
-
-                    .cadastro-dropdown-item {
-                        display: flex;
-                        align-items: center;
-                        padding: 8px 15px;
-                        text-decoration: none;
-                        color: var(--text-color);
-                        border-radius: 6px;
-                        transition: background-color 0.2s;
-                        font-size: 14px;
-                    }
-
-                    .cadastro-dropdown-item:hover {
-                        background-color: #e0e0e0;
-                        color: var(--text-color);
-                    }
-
                     .btn-brown,
                     #doeagora {
                         background-color: rgba(226, 204, 174, 1);
@@ -358,7 +294,7 @@
                         .mobile-menu-container .right-section {
                             display: block;
                             width: 100%;
-                            padding: 10px;
+                            padding: 10px 10px 10px 0;
                         }
 
                         .mobile-menu-container .desktop-nav {
@@ -370,12 +306,7 @@
 
                         .mobile-menu-container .desktop-nav a {
                             display: block;
-                            padding: 10px 0;
-                            width: 100%;
-                        }
-
-                        .mobile-menu-container .cadastro-section {
-                            display: block;
+                            padding: 8px 16px 8px 0;
                             width: 100%;
                         }
 
@@ -423,7 +354,7 @@
                             <button class="sidebar-toggle" id="sidebarToggle">
                                 <i class="bi bi-list"></i>
                             </button>
-                            <a href="/src/views/comprador/dashboard.html">
+                            <a href="../../../../src/views/comprador/telainicialparaocomprador.html">
                                 <div class="logo-upload" id="logoUpload">
                                     <div class="logo-preview" id="logoPreview">
                                     </div>
@@ -433,21 +364,10 @@
                                 <nav class="desktop-nav">
                                     <a href="/src/views/comprador/quemsomos2.html">Quem somos?</a>
                                     <a href="/src/views/comprador/saibamais2.html">Saiba mais</a>
-                                    <a href="/src/views/comprador/entrarcomprador.html">Entrar</a>
-                                    <div class="cadastro-section">
-                                        <button class="cadastro-button" id="cadastroButton">
-                                            Cadastrar
-                                            <i class="bi bi-chevron-down"></i>
-                                        </button>
-                                        <div class="cadastro-dropdown" id="cadastroDropdown">
-                                            <a class="cadastro-dropdown-item" href="/src/views/comprador/cadastrodoador.html">Dador</a>
-                                            <a class="cadastro-dropdown-item" href="/src/views/comprador/cadastrodonatario1.html">Donatário</a>
-                                        </div>
-                                    </div>
                                 </nav>
                             </div>
                             <div class="right-section">
-                                <a href="../index.html">
+                                <a href="../../../../src/views/comprador/doacao.html">
                                     <button class="btn btn-brown" type="button" id="doeagora">
                                         Doe agora
                                     </button>
@@ -458,25 +378,15 @@
                                     <nav class="desktop-nav">
                                         <a href="/src/views/comprador/quemsomos2.html">Quem somos?</a>
                                         <a href="/src/views/comprador/saibamais2.html">Saiba mais</a>
-                                        <a href="/src/views/comprador/entrarcomprador.html">Entrar</a>
-                                        <div class="cadastro-section">
-                                            <button class="cadastro-button" id="cadastroButtonMobile">
-                                                Cadastrar
-                                                <i class="bi bi-chevron-down"></i>
-                                            </button>
-                                            <div class="cadastro-dropdown" id="cadastroDropdownMobile">
-                                                <a class="cadastro-dropdown-item" href="/src/views/comprador/cadastrodoador.html">Dador</a>
-                                                <a class="cadastro-dropdown-item" href="/src/views/comprador/cadastrodonatario1.html">Donatário</a>
-                                            </div>
                                         </div>
+                                        <a href="../../../../src/views/comprador/doacao.html" class="doe-agora-link">
+                                            <button class="btn btn-brown" type="button" id="doeagoraMobile">
+                                                Doe agora
+                                            </button>
+                                        </a>
                                     </nav>
                                 </div>
                                 <div class="right-section">
-                                    <a href="../index.html">
-                                        <button class="btn btn-brown" type="button" id="doeagoraMobile">
-                                            Doe agora
-                                        </button>
-                                    </a>
                                 </div>
                             </div>
                         </div>

@@ -226,6 +226,10 @@ label {
     margin: 0; 
 }
 
+input::placeholder{
+    font-size: 14px;
+}
+
 #subtitulo{
     color: var(--cortitulo);
     font-family: 'Passion One';
@@ -257,8 +261,6 @@ label {
     font-weight: 500;
     
 }
-
-
 .pedido {
     width: 30rem;
     max-width: 100%;

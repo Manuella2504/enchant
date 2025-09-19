@@ -17,10 +17,10 @@ let geojsonLayer;
 // FUNÇÃO DE COR CORRIGIDA
 function getColor(risco) {
     if (risco === undefined || isNaN(risco)) return '#CCCCCC';
-    if (risco > 0.8) return '#800026'; // Muito Alto
-    if (risco > 0.6) return '#BD0026'; // Alto
-    if (risco > 0.4) return '#E31A1C'; // Médio
-    if (risco > 0.2) return '#FC4E2A'; // Baixo  (> 0.2 até 0.4)
+    if (risco >= 0.8) return '#800026'; // Muito Alto
+    if (risco >= 0.6) return '#BD0026'; // Alto
+    if (risco >= 0.4) return '#E31A1C'; // Médio
+    if (risco >= 0.2) return '#FC4E2A'; // Baixo  (> 0.2 até 0.4)
     return '#FFEDA0';                 // Muito Baixo (0 até 0.2)
 }
 
@@ -76,12 +76,100 @@ Promise.all([
             configurarBusca(geojsonFeatureCollection);
             criarGraficoDeRisco(results.data); 
             criarGraficoDeRiscoEmpilhado(results.data, dados2030, dados2050);
+
+            configurarConsultaDetalhada(geojsonFeatureCollection, dadosDosMunicipios, dadosVulnerabilidade, dadosAmeaca, dadosExposicao, dados2030, dados2050);
         }
     });
 }).catch(error => {
     console.error("Erro ao carregar os arquivos de dados do mapa:", error);
     alert("Não foi possível carregar os dados do mapa. Verifique o console.");
 });
+
+function configurarConsultaDetalhada(geojson, dadosRisco, dadosVuln, dadosAmeaca, dadosExposicao, dados2030, dados2050) {
+    const inputConsulta = document.getElementById('input-consulta');
+    const botaoConsulta = document.getElementById('botao-consulta');
+    const resultadoContainer = document.getElementById('resultado-consulta');
+
+    function buscarMunicipio() {
+        const nomeCidade = inputConsulta.value.trim().toLowerCase();
+        if (nomeCidade === '') {
+            resultadoContainer.innerHTML = ''; // Limpa se a busca for vazia
+            return;
+        }
+
+        // Usa a mesma lógica de busca do mapa
+        const municipiosEncontrados = geojson.features.filter(feature => 
+            feature.properties.name.split('/')[0].trim().toLowerCase() === nomeCidade
+        );
+
+        if (municipiosEncontrados.length === 0) {
+            resultadoContainer.innerHTML = `<div class="card-resultado"><p>Município não encontrado.</p></div>`;
+            return;
+        }
+
+        // Por enquanto, vamos pegar apenas o primeiro resultado
+        const municipio = municipiosEncontrados[0];
+        const codMun = municipio.properties.geocod_ibge;
+
+        // 1. Coletar todos os dados das diferentes fontes
+        const riscoPresente = dadosRisco.get(codMun);
+        const vulnerabilidade = dadosVuln.get(codMun);
+        const ameaca = dadosAmeaca.get(codMun);          
+        const exposicao = dadosExposicao.get(codMun);
+        const risco2030 = dados2030.find(row => row.geocod_ibge === codMun); // Procura nos arrays
+        const risco2050 = dados2050.find(row => row.geocod_ibge === codMun);
+
+        // 2. Montar o HTML do card de resultado
+        resultadoContainer.innerHTML = `
+            <div class="card-resultado">
+                <h4>${municipio.properties.name}</h4>
+                <div class="resultado-grid">
+                    <div class="resultado-item">
+                        <span class="label">Risco (Presente)</span>
+                        <span class="value">${riscoPresente ? parseFloat(riscoPresente.valor).toFixed(2).replace('.', ',') : 'N/A'}</span>
+                    </div>
+                    <div class="resultado-item">
+                        <span class="label">Classe Risco (Presente)</span>
+                        <span class="value">${riscoPresente ? riscoPresente.classe : 'N/A'}</span>
+                    </div>
+                    <div class="resultado-item">
+                        <span class="label">Risco (2030 Otimista)</span>
+                        <span class="value">${risco2030 ? parseFloat(risco2030.valor).toFixed(2).replace('.', ',') : 'N/A'}</span>
+                    </div>
+                    <div class="resultado-item">
+                        <span class="label">Classe Risco (2030 Otimista)</span>
+                        <span class="value">${risco2030 ? risco2030.classe : 'N/A'}</span>
+                    </div>
+                     <div class="resultado-item">
+                        <span class="label">Risco (2050 Otimista)</span>
+                        <span class="value">${risco2050 ? parseFloat(risco2050.valor).toFixed(2).replace('.', ',') : 'N/A'}</span>
+                    </div>
+                    <div class="resultado-item">
+                        <span class="label">Classe Risco (2050 Otimista)</span>
+                        <span class="value">${risco2050 ? risco2050.classe : 'N/A'}</span>
+                    </div>
+                    <div class="resultado-item">
+                        <span class="label">Vulnerabilidade (Presente)</span>
+                        <span class="value">${vulnerabilidade ? parseFloat(vulnerabilidade.valor).toFixed(2).replace('.', ',') : 'N/A'}</span>
+                    </div>
+                    <div class="resultado-item">
+                        <span class="label">Ameaça (Presente)</span>
+                        <span class="value">${ameaca ? parseFloat(ameaca.valor).toFixed(2).replace('.', ',') : 'N/A'}</span>
+                    </div>
+                    <div class="resultado-item">
+                        <span class="label">Exposição (Presente)</span>
+                        <span class="value">${exposicao ? parseFloat(exposicao.valor).toFixed(2).replace('.', ',') : 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    botaoConsulta.addEventListener('click', buscarMunicipio);
+    inputConsulta.addEventListener('keypress', e => {
+        if (e.key === 'Enter') buscarMunicipio();
+    });
+}
 
 function desenharMapaGeoJSON(geojson) {
     if (geojsonLayer) map.removeLayer(geojsonLayer);
@@ -130,7 +218,7 @@ function styleFunction(feature) {
         const risco = parseFloat(dados.valor);
         return { fillColor: getColor(risco), weight: 1, opacity: 1, color: 'white', dashArray: '3', fillOpacity: 0.75 };
     } else {
-        return { fillOpacity: 0, opacity: 0, stroke: false };
+        return { fillOpacity: 0, opacity: 0 };
     }
 }
 
@@ -185,7 +273,46 @@ info.update = function (props) {
         : 'Passe o mouse sobre um município');
 };
 
-function highlightFeature(e) { e.target.setStyle({ weight: 3, color: '#666', dashArray: '' }); info.update(e.target.feature.properties); }
+function isFeatureVisible(feature) {
+    const codMun = feature.properties.geocod_ibge;
+    const dados = dadosDosMunicipios.get(codMun);
+
+    const regiaoSelecionada = document.getElementById('filter-region').value;
+    const estadoSelecionado = document.getElementById('filter-state').value;
+    const riscosSelecionados = Array.from(document.querySelectorAll('.filter-panel input[type="checkbox"]:checked')).map(cb => cb.value);
+
+    if (!dados) {
+        return false;
+    }
+    
+    const siglaEstado = dados.nome.split('/')[1];
+    if (estadoSelecionado !== "TODOS" && siglaEstado !== estadoSelecionado) {
+        return false;
+    }
+
+    if (estadoSelecionado === "TODOS" && regiaoSelecionada !== "TODAS") {
+        const optionEstado = document.querySelector(`#filter-state option[value="${siglaEstado}"]`);
+        if (!optionEstado || optionEstado.dataset.region !== regiaoSelecionada) {
+            return false;
+        }
+    }
+    
+    if (riscosSelecionados.length > 0 && !riscosSelecionados.includes(dados.classe)) {
+        return false; 
+    }
+
+    return true;
+}
+
+function highlightFeature(e) { 
+
+  const feature = e.target.feature;
+  if (!isFeatureVisible(feature)) {
+        return; 
+  }
+  e.target.setStyle({ weight: 3, color: '#666', dashArray: '' }); info.update(e.target.feature.properties); 
+  
+}
 function resetHighlight(e) { geojsonLayer.resetStyle(e.target); info.update(); }
 function onEachFeature(feature, layer) { layer.on({ mouseover: highlightFeature, mouseout: resetHighlight }); }
 
@@ -257,11 +384,11 @@ function criarGraficoDeRisco(dadosCsv) {
     const data = Object.values(contagemPorClasse); //quantostem
 
     const backgroundColors = [
-        '#28a745', 
-        '#90EE90', 
-        '#FFC107', 
-        '#FD7E14',
-        '#DC3545', 
+        '#FFEDA0', 
+        '#FC4E2A', 
+        '#E31A1C', 
+        '#BD0026',
+        '#800026', 
         '#6C757D'  
     ];
 
@@ -331,11 +458,11 @@ function criarGraficoDeRiscoEmpilhado(dadosPresente, dados2030, dados2050) {
     const labels = ['Presente (2015)', 'Otimista (2030)', 'Otimista (2050)'];
     const classesDeRisco = ['Muito baixo', 'Baixo', 'Médio', 'Alto', 'Muito alto'];
     const colors = {
-        'Muito baixo': '#28a745', 
-        'Baixo': '#90EE90',       
-        'Médio': '#FFC107',       
-        'Alto': '#FD7E14',        
-        'Muito alto': '#DC3545'   
+        'Muito baixo': '#FFEDA0', 
+        'Baixo': '#FC4E2A',       
+        'Médio': '#E31A1C',       
+        'Alto': '#BD0026',        
+        'Muito alto': '#800026'   
     };
 
     const datasets = classesDeRisco.map(classe => {

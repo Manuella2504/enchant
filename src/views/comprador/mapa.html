@@ -10,10 +10,10 @@
     
     <link rel="stylesheet" href="../../../public/styles/comprador/mapa.css">
 
-    <link rel="stylesheet" href="../../../public/styles/global.css">
-    <script src="../../../public/scripts/layouts/comprador/headercomprador.js" defer></script>
-    <script src="../../../public/scripts/layouts/comprador/footercomprador.js" defer></script>
-    <script src="../../../public/scripts/layouts/comprador/sidebar.js" defer></script>
+  <link rel="stylesheet" href="../../../public/styles/global.css">
+  <script src="../../../public/scripts/layouts/comprador/sidebar.js" defer></script>
+  <script src="../../../public/scripts/layouts/comprador/headercomprador.js" defer></script>
+  <script src="../../../public/scripts/layouts/comprador/footercomprador.js" defer></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -125,6 +125,14 @@
             <canvas id="graficoRisco2"></canvas>
             <p><br>Fonte: AdaptaBrasil</p>
           </div>
+        </div>
+        <div class="consulta-container">
+          <h3>Consulta Detalhada de Município</h3>
+          <div class="consulta-busca">
+            <input type="search" id="input-consulta" placeholder="Digite o nome de um município...">
+            <button id="botao-consulta">Consultar</button>
+          </div>
+          <div id="resultado-consulta"></div>
         </div>
       </main>
       
