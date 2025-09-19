@@ -38,16 +38,63 @@ function getElement(id) {
 
 // Funções utilitárias
 const utils = {
+    // Função aprimorada para formatar data no padrão brasileiro (dd/mm/yyyy)
     formatDate(dateString) {
         if (!dateString) return '';
         try {
             const date = new Date(dateString);
             if (isNaN(date.getTime())) return '';
-            return date.toLocaleDateString('pt-BR');
+            
+            // Garantir que a data seja formatada corretamente no padrão brasileiro
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            
+            return `${day}/${month}/${year}`;
         } catch (error) {
             console.error('Erro ao formatar data:', error);
             return '';
         }
+    },
+
+    // Função para converter data do formato brasileiro (dd/mm/yyyy) para ISO (yyyy-mm-dd)
+    parseBrazilianDate(dateString) {
+        if (!dateString) return null;
+        try {
+            // Se já está no formato ISO, retornar como está
+            if (dateString.match(/^\d{4}-\d{2}-\d{2}$/)) {
+                return dateString;
+            }
+            
+            // Se está no formato brasileiro (dd/mm/yyyy), converter
+            const parts = dateString.split('/');
+            if (parts.length === 3) {
+                const day = parts[0].padStart(2, '0');
+                const month = parts[1].padStart(2, '0');
+                const year = parts[2];
+                return `${year}-${month}-${day}`;
+            }
+            
+            return null;
+        } catch (error) {
+            console.error('Erro ao converter data brasileira:', error);
+            return null;
+        }
+    },
+
+    // Função para obter data atual no formato brasileiro
+    getCurrentDateBR() {
+        const now = new Date();
+        const day = now.getDate().toString().padStart(2, '0');
+        const month = (now.getMonth() + 1).toString().padStart(2, '0');
+        const year = now.getFullYear();
+        return `${day}/${month}/${year}`;
+    },
+
+    // Função para obter data atual no formato ISO
+    getCurrentDateISO() {
+        const now = new Date();
+        return now.toISOString().split('T')[0];
     },
     
     formatCurrency(value) {
@@ -408,7 +455,7 @@ function generateReport() {
 
         const reportData = {
             id: nextId++,
-            data: new Date().toISOString().split('T')[0],
+            data: utils.getCurrentDateISO(),
             tipo: 'Relatório',
             categoria: reportCategory,
             responsavel: responsible,
@@ -471,7 +518,7 @@ function getFilteredDonations() {
     }
 }
 
-// Função para renderizar a tabela
+// Função para renderizar a tabela com formato brasileiro de data
 function renderTable() {
     const tableBody = getElement('tableBody');
     if (!tableBody) {
@@ -628,7 +675,7 @@ function renderPagination(totalPages) {
     }
 }
 
-// Função para gerar PDF
+// Função para gerar PDF com datas em formato brasileiro
 function generatePDF(donationId = null) {
     const pdfLoading = getElement('pdfLoading');
     if (!pdfLoading) {
@@ -658,14 +705,14 @@ function generatePDF(donationId = null) {
                 
                 if (donation.tipo === 'Relatório' && donation.dadosFiltrados) {
                     reportData = donation.dadosFiltrados;
-                    fileName = `Relatorio_${donation.tipoRelatorio}_${donation.categoria}_${donation.id}_${new Date().toISOString().split('T')[0]}.pdf`;
+                    fileName = `Relatorio_${donation.tipoRelatorio}_${donation.categoria}_${donation.id}_${utils.getCurrentDateISO().replace(/-/g, '')}.pdf`;
                 } else {
                     reportData = [donation];
-                    fileName = `${donation.tipo}_${donation.categoria}_${donation.id}_${new Date().toISOString().split('T')[0]}.pdf`;
+                    fileName = `${donation.tipo}_${donation.categoria}_${donation.id}_${utils.getCurrentDateISO().replace(/-/g, '')}.pdf`;
                 }
             } else {
                 reportData = getFilteredDonations();
-                fileName = `Relatorio_Geral_${new Date().toISOString().split('T')[0]}.pdf`;
+                fileName = `Relatorio_Geral_${utils.getCurrentDateISO().replace(/-/g, '')}.pdf`;
             }
 
             await createABNTPDFDocument(doc, reportData, fileName);
@@ -679,7 +726,7 @@ function generatePDF(donationId = null) {
     }, 800);
 }
 
-// Função para criar documento PDF em formato ABNT
+// Função para criar documento PDF em formato ABNT com datas brasileiras
 async function createABNTPDFDocument(doc, data, fileName) {
     try {
         const margin = 30;
@@ -751,7 +798,7 @@ async function createABNTPDFDocument(doc, data, fileName) {
 
 Total de registros analisados: ${data.length}
 Valor total: ${utils.formatCurrency(totalValue)}
-Data de geração: ${new Date().toLocaleString('pt-BR')}
+Data de geração: ${utils.getCurrentDateBR()} às ${new Date().toLocaleTimeString('pt-BR')}
 Arquivo: ${fileName}`;
 
         addText(intro, 12, false, 'justify');
@@ -763,7 +810,7 @@ Arquivo: ${fileName}`;
         addText('3. DADOS DETALHADOS', 14, true);
         currentY += 20;
 
-        // Tabela de dados
+        // Tabela de dados com datas formatadas em brasileiro
         data.forEach((donation, index) => {
             if (currentY > pageHeight - 60) {
                 doc.addPage();
@@ -972,7 +1019,8 @@ function initialize() {
         setTimeout(() => {
             notification.show(
                 `Sistema carregado com sucesso!<br>
-                <strong>${donations.length}</strong> registros disponíveis`, 
+                <strong>${donations.length}</strong> registros disponíveis<br>
+                Datas em formato brasileiro: <strong>dd/mm/aaaa</strong>`, 
                 'info', 
                 4000
             );
@@ -1008,7 +1056,7 @@ function startSystem() {
     }
 }
 
-// API para integração futura aprimorada
+// API para integração futura aprimorada com suporte a datas brasileiras
 window.DonationSystem = {
     addExternalData(data) {
         try {
@@ -1016,9 +1064,15 @@ window.DonationSystem = {
                 throw new Error('Dados inválidos fornecidos');
             }
             
+            // Converter data brasileira para formato ISO se necessário
+            let isoDate = data.date;
+            if (data.date && data.date.includes('/')) {
+                isoDate = utils.parseBrazilianDate(data.date);
+            }
+            
             const donation = {
                 id: nextId++,
-                data: data.date || new Date().toISOString().split('T')[0],
+                data: isoDate || utils.getCurrentDateISO(),
                 tipo: data.type || 'Pontual',
                 categoria: data.category || 'Geral',
                 responsavel: data.responsible || 'Sistema Externo',
@@ -1034,6 +1088,7 @@ window.DonationSystem = {
             notification.show(
                 `Dados recebidos via API!<br>
                 <strong>${donation.categoria}</strong><br>
+                Data: ${utils.formatDate(donation.data)}<br>
                 Por: ${donation.responsavel}`, 
                 'info'
             );
@@ -1069,8 +1124,20 @@ window.DonationSystem = {
             const reportCategory = getElement('reportCategory');
             
             if (config.responsible && responsible) responsible.value = config.responsible;
-            if (config.startDate && startPeriod) startPeriod.value = config.startDate;
-            if (config.endDate && endPeriod) endPeriod.value = config.endDate;
+            
+            // Suporte para datas em formato brasileiro
+            if (config.startDate && startPeriod) {
+                const isoStartDate = config.startDate.includes('/') ? 
+                    utils.parseBrazilianDate(config.startDate) : config.startDate;
+                startPeriod.value = isoStartDate;
+            }
+            
+            if (config.endDate && endPeriod) {
+                const isoEndDate = config.endDate.includes('/') ? 
+                    utils.parseBrazilianDate(config.endDate) : config.endDate;
+                endPeriod.value = isoEndDate;
+            }
+            
             if (config.type && reportType) reportType.value = config.type;
             if (config.category && reportCategory) reportCategory.value = config.category;
             
@@ -1092,6 +1159,10 @@ window.DonationSystem = {
             
             Object.entries(filters).forEach(([key, value]) => {
                 if (filterElements[key] && value !== undefined) {
+                    // Converter datas brasileiras para formato ISO
+                    if ((key === 'startDate' || key === 'endDate') && value.includes('/')) {
+                        value = utils.parseBrazilianDate(value);
+                    }
                     filterElements[key].value = value;
                 }
             });
@@ -1105,6 +1176,19 @@ window.DonationSystem = {
         }
     },
     
+    // Função utilitária para conversão de datas
+    formatDateBR(dateString) {
+        return utils.formatDate(dateString);
+    },
+    
+    parseBrazilianDate(dateString) {
+        return utils.parseBrazilianDate(dateString);
+    },
+    
+    getCurrentDateBR() {
+        return utils.getCurrentDateBR();
+    },
+    
     reinitialize,
     
     getStats() {
@@ -1115,7 +1199,11 @@ window.DonationSystem = {
                 totalValue: filteredData.reduce((sum, d) => sum + (d.valor || 0), 0),
                 categories: {},
                 types: {},
-                origins: {}
+                origins: {},
+                dateRange: {
+                    earliest: filteredData.length > 0 ? utils.formatDate(Math.min(...filteredData.map(d => new Date(d.data)))) : null,
+                    latest: filteredData.length > 0 ? utils.formatDate(Math.max(...filteredData.map(d => new Date(d.data)))) : null
+                }
             };
             
             filteredData.forEach(d => {
@@ -1147,6 +1235,7 @@ window.addEventListener('unhandledrejection', (event) => {
 
 // Log de status
 console.log('Sistema de Histórico de Doações carregado');
+console.log('Formato de data: dd/mm/yyyy (brasileiro)');
 console.log('API disponível: window.DonationSystem');
 console.log('Atalhos disponíveis: Ctrl+R (relatório), Ctrl+F (filtros), Ctrl+L (limpar filtros)');
 

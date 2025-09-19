@@ -12,6 +12,23 @@
     <script src="../../../public/scripts/comprador/historico.js" defer></script>
 
   <link rel="stylesheet" href="../../../public/styles/global.css">
+
+  <script>
+    // Formatar inputs de data para dd/mm/yyyy
+    document.addEventListener('DOMContentLoaded', function() {
+      const dateInputs = document.querySelectorAll('input[type="date"]');
+      dateInputs.forEach(input => {
+        input.addEventListener('change', function() {
+          if (this.value) {
+            const date = new Date(this.value);
+            const formatted = date.toLocaleDateString('pt-BR'); // dd/mm/yyyy
+            // Para exibir, podemos usar um placeholder ou tooltip, mas manter o value original
+            this.setAttribute('data-formatted', formatted);
+          }
+        });
+      });
+    });
+  </script>
   <script src="../../../public/scripts/layouts/comprador/sidebar.js" defer></script>
   <script src="../../../public/scripts/layouts/comprador/headercomprador.js" defer></script>
   <script src="../../../public/scripts/layouts/comprador/footercomprador.js" defer></script>
