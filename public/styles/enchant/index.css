@@ -250,7 +250,7 @@
         .problem-bubble:hover {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
             transform: translateY(-8px) scale(1.05);
-            z-index: 12;
+            z-index: 12 !important;
         }
 
         .bubble-problem-1 {
@@ -259,12 +259,15 @@
             transform: rotate(-8deg);
         }
 
+
+
         .bubble-problem-2 {
             bottom: 50px;
             right: -140px;
             transform: rotate(6deg);
         }
 
+ 
         .gradient-ball {
             position: absolute;
             border-radius: 50%;
