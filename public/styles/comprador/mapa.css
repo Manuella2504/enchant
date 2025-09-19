@@ -84,7 +84,7 @@ main {
 /* Estilo para o card de resultado */
 #resultado-consulta {
     text-align: left;
-    margin-bottom: 100px;
+    margin-bottom: 1px;
 }
 
 .card-resultado {
@@ -103,8 +103,7 @@ main {
 .card-resultado h4 {
     margin-top: 0;
     border-bottom: 1px solid #ccc;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+    padding-bottom: 5px;
 }
 
 .resultado-grid {

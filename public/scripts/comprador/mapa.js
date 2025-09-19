@@ -17,11 +17,11 @@ let geojsonLayer;
 // FUNÇÃO DE COR CORRIGIDA
 function getColor(risco) {
     if (risco === undefined || isNaN(risco)) return '#CCCCCC';
-    if (risco >= 0.8) return '#800026'; // Muito Alto
-    if (risco >= 0.6) return '#BD0026'; // Alto
-    if (risco >= 0.4) return '#E31A1C'; // Médio
-    if (risco >= 0.2) return '#FC4E2A'; // Baixo  (> 0.2 até 0.4)
-    return '#FFEDA0';                 // Muito Baixo (0 até 0.2)
+    if (risco >= 0.8) return '#61350C'; // Muito Alto
+    if (risco >= 0.6) return '#8B4513'; // Alto
+    if (risco >= 0.4) return '#A0522D'; // Médio
+    if (risco >= 0.2) return '#CD853F'; // Baixo  (> 0.2 até 0.4)
+    return '#E2CCAE';                 // Muito Baixo (0 até 0.2)
 }
 
 // carrega os municipios .csv e os formatos dos municipios .geojson
@@ -73,7 +73,6 @@ Promise.all([
             //chamar as funcoes
             desenharMapaGeoJSON(geojsonFeatureCollection);
             configurarFiltros();
-            configurarBusca(geojsonFeatureCollection);
             criarGraficoDeRisco(results.data); 
             criarGraficoDeRiscoEmpilhado(results.data, dados2030, dados2050);
 
@@ -106,20 +105,31 @@ function configurarConsultaDetalhada(geojson, dadosRisco, dadosVuln, dadosAmeaca
             resultadoContainer.innerHTML = `<div class="card-resultado"><p>Município não encontrado.</p></div>`;
             return;
         }
+        else if (municipiosEncontrados.length === 1) {
+            zoomParaMunicipio(municipiosEncontrados[0]);
+        } else {
+            alert('Múltiplos municípios encontrados com este nome. Exibindo o primeiro resultado.');
+            zoomParaMunicipio(municipiosEncontrados[0]);
+        }
 
-        // Por enquanto, vamos pegar apenas o primeiro resultado
+        function zoomParaMunicipio(municipioFeature) {
+            const camadaMunicipio = L.geoJson(municipioFeature);
+            map.fitBounds(camadaMunicipio.getBounds());
+            nomeCidade.value = municipioFeature.properties.name;
+        }
+
         const municipio = municipiosEncontrados[0];
         const codMun = municipio.properties.geocod_ibge;
 
-        // 1. Coletar todos os dados das diferentes fontes
         const riscoPresente = dadosRisco.get(codMun);
         const vulnerabilidade = dadosVuln.get(codMun);
         const ameaca = dadosAmeaca.get(codMun);          
         const exposicao = dadosExposicao.get(codMun);
-        const risco2030 = dados2030.find(row => row.geocod_ibge === codMun); // Procura nos arrays
+        const risco2030 = dados2030.find(row => row.geocod_ibge === codMun);
         const risco2050 = dados2050.find(row => row.geocod_ibge === codMun);
 
-        // 2. Montar o HTML do card de resultado
+        zoomParaMunicipio(municipiosEncontrados[0]);
+
         resultadoContainer.innerHTML = `
             <div class="card-resultado">
                 <h4>${municipio.properties.name}</h4>
@@ -216,7 +226,7 @@ function styleFunction(feature) {
 
     if (deveExibir) {
         const risco = parseFloat(dados.valor);
-        return { fillColor: getColor(risco), weight: 1, opacity: 1, color: 'white', dashArray: '3', fillOpacity: 0.75 };
+        return { fillColor: getColor(risco), weight: 1, opacity: 1, color: 'white', dashArray: '3', fillOpacity: 1 };
     } else {
         return { fillOpacity: 0, opacity: 0 };
     }
@@ -327,38 +337,7 @@ legend.onAdd = function (map) {
     return div;
 };
 
-function configurarBusca(geojson) {
-    const inputBusca = document.getElementById('input-pesquise');
-    const botaoBusca = document.getElementById('botao-de-busca');
 
-    function buscarMunicipio() {
-        const nomeCidade = inputBusca.value.trim().toLowerCase();
-        if (nomeCidade === '') return;
-        const municipiosEncontrados = geojson.features.filter(feature => 
-            feature.properties.name.split('/')[0].trim().toLowerCase() === nomeCidade
-        );
-        if (municipiosEncontrados.length === 0) {
-            resultadoConsulta.innerHTML = `<div class="card-resultado"><p>Município não encontrado.</p></div>`;
-        } else if (municipiosEncontrados.length === 1) {
-            zoomParaMunicipio(municipiosEncontrados[0]);
-        } else {
-            alert('Múltiplos municípios encontrados com este nome. Exibindo o primeiro resultado.');
-            zoomParaMunicipio(municipiosEncontrados[0]);
-        }
-    }
-    
-    // FUNÇÃO DE ZOOM CORRIGIDA
-    function zoomParaMunicipio(municipioFeature) {
-        const camadaMunicipio = L.geoJson(municipioFeature);
-        map.fitBounds(camadaMunicipio.getBounds());
-        inputBusca.value = municipioFeature.properties.name;
-    }
-
-    botaoBusca.addEventListener('click', buscarMunicipio);
-    inputBusca.addEventListener('keypress', e => {
-        if (e.key === 'Enter') buscarMunicipio();
-    });
-}
 
 function criarGraficoDeRisco(dadosCsv) {
   
@@ -384,11 +363,11 @@ function criarGraficoDeRisco(dadosCsv) {
     const data = Object.values(contagemPorClasse); //quantostem
 
     const backgroundColors = [
-        '#FFEDA0', 
-        '#FC4E2A', 
-        '#E31A1C', 
-        '#BD0026',
-        '#800026', 
+        '#E2CCAE', 
+        '#CD853F', 
+        '#A0522D', 
+        '#8B4513',
+        '#61350C', 
         '#6C757D'  
     ];
 
@@ -458,11 +437,11 @@ function criarGraficoDeRiscoEmpilhado(dadosPresente, dados2030, dados2050) {
     const labels = ['Presente (2015)', 'Otimista (2030)', 'Otimista (2050)'];
     const classesDeRisco = ['Muito baixo', 'Baixo', 'Médio', 'Alto', 'Muito alto'];
     const colors = {
-        'Muito baixo': '#FFEDA0', 
-        'Baixo': '#FC4E2A',       
-        'Médio': '#E31A1C',       
-        'Alto': '#BD0026',        
-        'Muito alto': '#800026'   
+        'Muito baixo': '#E2CCAE', 
+        'Baixo': '#CD853F',       
+        'Médio': '#A0522D',       
+        'Alto': '#8B4513',        
+        'Muito alto': '#61350C'   
     };
 
     const datasets = classesDeRisco.map(classe => {
