@@ -256,10 +256,6 @@
                                 <i class="bi bi-check-circle-fill"></i>
                                 <span>Verificação de doações</span>
                             </a>
-                            <a href="/src/views/comprador/ajuda.html">
-                                <i class="bi bi-info-circle"></i>
-                                <span>Ajuda</span>
-                            </a>
                         </nav>
                         
                         <div class="sidebar-profile">
