@@ -223,70 +223,6 @@
                         font-size: 16px;
                     }
 
-                    .cadastro-section {
-                        position: relative;
-                    }
-
-                    .cadastro-button {
-                        background: none;
-                        border: none;
-                        color: var(--text-color);
-                        text-decoration: none;
-                        font-size: 14px;
-                        font-weight: 400;
-                        cursor: pointer;
-                        transition: color 0.2s;
-                        padding: 0;
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                    }
-
-                    .cadastro-button:hover {
-                        color: var(--accent-color);
-                    }
-
-                    .cadastro-button i {
-                        transition: transform 0.3s ease;
-                    }
-
-                    .cadastro-button.open i {
-                        transform: rotate(180deg);
-                    }
-
-                    .cadastro-dropdown {
-                        position: absolute;
-                        top: 120%;
-                        left: 0;
-                        background: var(--light-bg);
-                        border-radius: 8px;
-                        padding: 10px;
-                        min-width: 150px;
-                        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-                        display: none;
-                        z-index: 1001;
-                    }
-
-                    .cadastro-dropdown.show {
-                        display: block;
-                    }
-
-                    .cadastro-dropdown-item {
-                        display: flex;
-                        align-items: center;
-                        padding: 8px 15px;
-                        text-decoration: none;
-                        color: var(--text-color);
-                        border-radius: 6px;
-                        transition: background-color 0.2s;
-                        font-size: 14px;
-                    }
-
-                    .cadastro-dropdown-item:hover {
-                        background-color: #e0e0e0;
-                        color: var(--text-color);
-                    }
-
                     .btn-brown,
                     #doeagora {
                         background-color: rgba(226, 204, 174, 1);
@@ -371,19 +307,6 @@
                         .mobile-menu-container .desktop-nav a {
                             display: block;
                             padding: 8px 16px 8px 0;
-                            width: 100%;
-                        }
-
-                        .mobile-menu-container .cadastro-button {
-                            padding: 8px 16px 8px 0;
-                        }
-
-                        #doeagoraMobile {
-                            padding: 10px 16px 10px 10px;
-                        }
-
-                        .mobile-menu-container .cadastro-section {
-                            display: block;
                             width: 100%;
                         }
 

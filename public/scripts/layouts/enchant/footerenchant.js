@@ -585,7 +585,7 @@
         <footer>
             <div class="footer-container">
                 <div class="footer-left">
-                    <img src="/assets/imgs/enchant/logo-enchant.png" 
+                    <img src="../../../../public/assets/imgs/enchant/logo-enchant.png" 
                             alt="Logo Enchant" 
                             class="footer-logo" 
                             title="Logo-Enchant" />
