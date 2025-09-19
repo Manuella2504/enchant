@@ -181,4 +181,9 @@ a:hover {
     html{
     font-size: 92%;
     }
+    
+    input::placeholder{
+    font-size: 14px;
+}
+
 }
